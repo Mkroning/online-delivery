@@ -1,31 +1,74 @@
-import React, { useState, useReducer} from 'react'
+import React, { useState, useReducer, useEffect} from 'react'
 import {
     View, Text, Image, StyleSheet, Dimensions
 } from 'react-native'
 import * as Location from 'expo-location'
+import { useNavigation } from '../utils'
 
 const screenWidth = Dimensions.get('screen').width
 
 export const LandingScreen = () => {
 
+    const { navigate } = useNavigation();
+
     const [errorMsg, setErrorMsg] = useState("")
-    const [address, setAddress] = useState<Location.Address>()
+    const [address, setAddress] = useState()
 
     const [displayAddress, setDisplayAddress] = useState("")
      
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestPermissionsAsync()
+
+            if (status !== 'granted'){
+                setErrorMsg('Permission to acess location is not granted')
+            }
+            let location: any = await Location.getCurrentPositionAsync({})
+
+            const { coords } = location
+
+            if (coords) {
+                const { latitude, longitude } = coords 
+
+                let addressResponse: any = await Location.reverseGeocodeAsync({
+                    latitude, longitude
+                })
+                for(let item of addressResponse){
+                    setAddress(item)
+                    let currentAddress = `${item.name},${item.street}, ${item.postalCode}, ${item.country}`
+                    //setDisplayAddress(currentAddress)
+
+                    if(currentAddress.length > 0) {
+                        setTimeout(() => {
+                            navigate('homeStack')
+                        }, 1000)
+                    }
+
+                    return; 
+                }
+
+            } else {
+ 
+            }
+        })();
+
+    }, [])
+
     return (
         <View style={styles.container}>
             <View style={styles.navigation} />
              <View style={styles.body}>
-                 <Image source={require('../images/')} style={styles.deliveryIcon} />
+                 <Image source={require('../images/icon.png')} style={styles.deliveryIcon} />
                  <View style={styles.addressContainer}>
                     <Text style={styles.addresTitle}>
-                         Your delivery adress
+                        BeautyArt
                     </Text>
                  </View>
+                <Text style={styles.addressText}> {displayAddress}</Text>
+
              </View>
 
-        <View style={styles.footer} />
+            <View style={styles.footer} />
         </View>
     )
 }
@@ -50,6 +93,11 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: '700',
         color: '#707070'
+    },
+    addressText: {
+        fontSize: 22,
+        fontWeight: '700',
+        color: '#4f4f4f'
     },
     body: {
         flex: 9,
