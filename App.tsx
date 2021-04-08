@@ -4,6 +4,9 @@ import { Image, StyleSheet, Text, View } from 'react-native';
 import { LandingScreen } from './src/screens/LandingScreen';
 import { HomeScreen } from './src/screens/HomeScreen';
 
+import { Provider } from 'react-redux'
+import { store } from './src/redux'
+
 import { createStackNavigator } from 'react-navigation-stack'
 import { createAppContainer, createSwitchNavigator } from 'react-navigation'
 import { createBottomTabNavigator } from 'react-navigation-tabs'
@@ -29,7 +32,7 @@ const switchNavigator = createStackNavigator({
       }),
       navigationOptions: {
         tabBarIcon: ({ focused, tintColor}) => {
-          let icon = focused == true ? require('./src/images/home.png'): require('./src/images/home.png')
+          let icon = focused == true ? require('./src/images/home.png'): require('./src/images/home_n.png')
           return <Image source={icon} style={styles.tabIcon} />
         }
       }
@@ -46,18 +49,7 @@ const switchNavigator = createStackNavigator({
         }
       }
     },
-    // Cart tab Icon
-    // Cart: {
-    //   screen: createStackNavigator({
-    //     CartPage: HomeScreen
-    //   }),
-    //   navigationOptions: {
-    //     tabBarIcon: ({ focused, tintColor}) => {
-    //       let icon = focused == true ? require('./src/images/.png'): require('./src/images/home_n_icon.png')
-    //       return <Image source={icon} style={styles.tabIcon} />
-    //     }
-    //   }
-    // },
+    // Account icon
     Account: {
       screen: createStackNavigator({
         AccountPage: HomeScreen
@@ -75,7 +67,9 @@ const AppNavigation = createAppContainer(switchNavigator);
 
 export default function App() {
   return (
-  <AppNavigation />
+  <Provider store={store}>
+    <AppNavigation />
+  </Provider>
   );
 }
 
