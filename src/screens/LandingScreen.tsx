@@ -12,10 +12,10 @@ export const LandingScreen = () => {
     const { navigate } = useNavigation();
 
     const [errorMsg, setErrorMsg] = useState("")
-    const [address, setAddress] = useState()
+    const [address, setAddress] = useState<Location.Address>()
 
     const [displayAddress, setDisplayAddress] = useState("")
-     
+
     useEffect(() => {
         (async () => {
             let { status } = await Location.requestPermissionsAsync()
@@ -28,7 +28,7 @@ export const LandingScreen = () => {
             const { coords } = location
 
             if (coords) {
-                const { latitude, longitude } = coords 
+                const { latitude, longitude } = coords
 
                 let addressResponse: any = await Location.reverseGeocodeAsync({
                     latitude, longitude
@@ -44,11 +44,11 @@ export const LandingScreen = () => {
                         }, 1000)
                     }
 
-                    return; 
+                    return;
                 }
 
             } else {
- 
+
             }
         })();
 
