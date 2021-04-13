@@ -1,5 +1,0 @@
-const ShoppingReducer = () => {
-
-}
-
-export { ShoppingReducer }

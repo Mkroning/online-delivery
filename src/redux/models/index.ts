@@ -22,13 +22,13 @@ export interface Provider{
   address: string;
   phone:string;
   images:string;
-  foods:[Service]
+  services:[Service]
 }
 
 export interface ServiceAvailability{
   categories: [Category];
   providers: [Provider];
-  services:[Service];
+  services:[Service]
 }
 
 
@@ -41,5 +41,11 @@ export interface UserModel {
 
 export interface UserState{
   user:UserModel;
-  location: Address
+  location: Address;
+  error: string | undefined
+}
+
+export interface ServiceState {
+  availability: ServiceAvailability,
+
 }
