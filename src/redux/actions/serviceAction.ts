@@ -16,14 +16,14 @@ export interface ServiceErrorAction{
 
 export type ServiceAction = AvailabilityAction | ServiceErrorAction
 
-export const onAvailability = () => {
+export const onAvailability = (postCode: string) => {
   return async ( dispatch: Dispatch<ServiceAction>) =>{
     try{
 
       /*TO-DO
         terminar a url conforme o back end
       */
-      const response = await axios.get<ServiceAvailability>(`${BASE_URL}/service/availability/78787878`)
+      const response = await axios.get<ServiceAvailability>(`${BASE_URL}/service/availability/${postCode}`)
 
       if(!response) {
         dispatch({

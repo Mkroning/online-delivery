@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 
@@ -16,11 +16,20 @@ const _HomeScreen: React.FC<HomeProps> = (props) => {
 
   const { location } = props.userReducer;
   const { availability } = props.serviceReducer;
+  const { categories, services, providers } = availability
+  useEffect(() => {
+    props.onAvailability(location.postalCode)
+  }, [])
 
     return (
         <View style={styles.container}>
             <View style={styles.navigation}>
-                <Text>{JSON.stringify(location)}</Text>
+              <View style={{marginTop:50, flex:1, backgroundColor: 'white', paddingLeft: 20, paddingRight: 20, alignItems: 'center', justifyContent:'center', flexDirection: 'row'}}>
+              <Text>{`${location.name}, ${location.street}, ${location.city}`}</Text>
+              </View>
+              <View style={{ flex: 8, backgroundColor: '#D3D3D3'}}>
+                <Text>Search bar</Text>
+              </View>
             </View>
             <View style={styles.body}>
                 <Text>  </Text>
@@ -40,17 +49,17 @@ const styles = StyleSheet.create({
     },
     navigation: {
         flex: 2,
-        backgroundColor: 'white'
+        backgroundColor: '#D3D3D3'
     },
     body: {
         flex: 9,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white'
+        backgroundColor: '#D3D3D3'
     },
     footer: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: '#D3D3D3'
     }
 })
 
